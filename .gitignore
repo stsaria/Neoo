@@ -2,3 +2,7 @@
 .chrome/
 *.iml
 .idea/
+.tmp/
+.MainVenv/
+.SelfBotVenv/
+.BotVenv/

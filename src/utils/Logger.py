@@ -31,7 +31,7 @@ class Logger:
                     case LogType.SUCCESS:
                         s += "[?]Other"
                 msg = log.getMessage()
-                s += (f" - {msg}" if msg else "")+"\n"
+                s += (f" - {msg}" if msg else "")+f" - {log.getDateTime()}\n"
         return s
     def clear(self) -> None:
         self._logs.clear()

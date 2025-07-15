@@ -5,8 +5,8 @@ import typing
 
 from discord import Member, TextChannel, VoiceChannel, Guild
 from discord.abc import GuildChannel
-from src.botEnv.Bot import Bot
-from src.utils.Logger import Logger
+from .Bot import Bot
+from ..utils.Logger import Logger
 
 class RaidBot(Bot):
     def __init__(self, logger:Logger, token:str, readyFunc:typing.Callable, readyFuncArgs:tuple):

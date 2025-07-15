@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neoo - Tools</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <div class="header">
+            <div class="notification">
+                <img src="static/discordLogo.svg" class="notification-icon">
+                <span class="notification-count" id="notificationCount">0</span>
+            </div>
+            <h1 class="title">Tools</h1>
+            <ul class="nav">
+                <li><a href="/tools">Tools</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <ul>
+                <h3>Bot</h3>
+                <li><a href="toBot?page=nuke">Nuke</a></li>
+                <br>
+                <h3>SelfBot</h3>
+                <h5>Account</h5>
+                <li><a href="toSelfBot?page=changeStatus">ChangeStatus</a></li>
+                <li><a href="toSelfBot?page=changeNickName">ChangeNickName</a></li>
+                <br>
+                <h5>Guild</h5>
+                <li><a href="toSelfBot?page=joinGuild">JoinGuild</a></li>
+                <li><a href="toSelfBot?page=leaveGuild">LeaveGuild</a></li>
+                <br>
+                <h5>Spam</h5>
+                <li><a href="toSelfBot?page=typing">Typing</a></li>
+                <li><a href="toSelfBot?page=nuke">Nuke</a></li>
+                <li><a href="toSelfBot?page=channelNuke">ChannelNuke</a></li>
+                <br>
+                <h5>Verify</h5>
+                <li><a href="toSelfBot?page=reaction">Reaction</a></li>
+                <li><a href="toSelfBot?page=pushButton">PushButton</a></li>
+                <br>
+                <h3>Etc</h3>
+                <li><a href="https://github.com/stsaria/Neoo">Github</a></li>
+                <br>
+                <li><a href="stop">Stop</a></li>
+            </ul>
+        </div>
+        <h4 style="text-align: center; margin-top: 20px;">Made by Saria and Acted</h4>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script>
+        let count = 0;
+        const notificationCount = document.getElementById('notificationCount');
+
+        setInterval(() => {
+            count = (count + 1) % 201; // 200を超えたらリセット
+            notificationCount.textContent = count;
+        }, 50);
+    </script>
+</body>
+</html>

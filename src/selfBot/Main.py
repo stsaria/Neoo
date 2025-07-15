@@ -1,11 +1,12 @@
-import threading, os
+import threading
+import os
 import time
 
 from flask import Flask, request, redirect, render_template
 
-from .ChromeSetuper import ChromeSetuper
-from .RaidBot import RaidBot
-from ..utils.Logger import Logger
+from src.selfBot.ChromeSetuper import ChromeSetuper
+from src.selfBot.RaidBot import RaidBot
+from src.utils.Logger import Logger
 
 logger:Logger = Logger()
 bots:list[RaidBot] = []
@@ -16,10 +17,10 @@ def clear():
     bots.clear()
 
 class Web:
-    _app = Flask(__name__, template_folder=os.path.abspath("templates/selfBot/"))
+    _app = Flask(__name__, template_folder=os.path.abspath("templates/selfBot/"), static_folder=os.path.abspath("static/"))
     _app.config['TEMPLATES_AUTO_RELOAD'] = True
     _app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-    def run(self, host:str="127.0.0.1", port:int=8080):
+    def run(self, host:str="0.0.0.0", port:int=8081):
         self._app.run(host, port)
     @staticmethod
     @_app.route("/getLog", methods=["GET"])

@@ -46,28 +46,16 @@
                     </form>
                 </div>
             </div>
-            {% if logId %}
             <script src="https://unpkg.com/htmx.org@2.0.1"></script>
             <pre style="white-space: pre-wrap;">
-                <div hx-get="getLog?id={{ logId }}" hx-trigger="every 300ms"></div>
+                <div hx-get="getLog" hx-trigger="every 300ms"></div>
             </pre>
-            {% endif %}
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script>
         const linkElement = document.getElementById('aLink');
         linkElement.href = `http://${window.location.hostname}:8080/tools`;
-
-        document.getElementById('form').addEventListener('submit', function(event) {
-            var tokensInput = document.getElementById("tokens");
-            var guildIdCode = document.getElementById("guildId");
-            var newNameInput = document.getElementById("newName");
-            var submitButton = newNameInput.readOnly = capmonsterApiKeyInput.readOnly = true;
-            submitButton.disabled = true;
-            var spinner = this.querySelector('.spinner-border');
-            spinner.classList.remove('d-none');
-        });
 
         let count = 0;
         const notificationCount = document.getElementById('notificationCount');

@@ -1,37 +1,36 @@
 import threading, os
 from flask import Flask, request, redirect, render_template
 
-from .RaidBot import RaidBot
-from ..utils.Logger import Logger
+from src.bot.RaidBot import RaidBot
+from src.utils.Logger import Logger
 
 logger:Logger = Logger()
 bots:list[RaidBot] = []
 
 class Web:
-    _app = Flask(__name__, template_folder=os.path.abspath("templates/bot/"))
+    _app = Flask(__name__, template_folder=os.path.abspath("templates/bot/"), static_folder=os.path.abspath("static/"))
     _app.config['TEMPLATES_AUTO_RELOAD'] = True
     _app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-    def run(self, host:str="127.0.0.1", port:int=8080):
+    def run(self, host:str="0.0.0.0", port:int=8082):
         self._app.run(host, port)
 
-    @_app.route("/")
-    def index(self):
-        return render_template("index.html")
-
+    @staticmethod
     @_app.route("/getLog", methods=["GET"])
-    def getLog(self):
+    def getLog():
         return logger.toStr()
 
+    @staticmethod
     @_app.route("/stop", methods=["GET"])
-    def stop(self):
+    def stop():
         [bot.stop() for bot in bots]
         bots.clear()
         logger.clear()
         return redirect(request.referrer)
 
+    @staticmethod
     @_app.route("/nuke", methods=["GET", "POST"])
-    def nuke(self):
+    def nuke():
         if request.method == "POST":
             logger.other("Start\n\n")
 

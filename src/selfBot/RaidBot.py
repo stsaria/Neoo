@@ -5,14 +5,15 @@ import typing
 
 from discord import Member, TextChannel, VoiceChannel, Guild, Role, Status
 from discord.abc import GuildChannel
-from src.selfbotEnv.Bot import Bot
-from src.selfbotEnv.Joiner import Joiner
-from src.utils.Logger import Logger
+
+from .Bot import Bot
+from .Joiner import Joiner
+from ..utils.Logger import Logger
 
 class RaidBot(Bot):
     def __init__(self, logger:Logger, token:str, readyFunc:typing.Callable, readyFuncArgs:tuple):
         super().__init__(token)
-        self.logger:Logger = logger
+        self._logger:Logger = logger
         self._channels:list[GuildChannel] = []
 
         self._readyFunc = readyFunc
@@ -25,7 +26,7 @@ class RaidBot(Bot):
         msg = f"{channel.name},{channel.id}"
         if not type(channel) in [TextChannel, VoiceChannel]:
             self._channels.remove(channel)
-        self.logger.success(msg) if self.sendMessage(message, channel) else self.logger.failed(msg)
+        self._logger.success(msg) if self.sendMessage(message, channel) else self._logger.failed(msg)
     async def OneNuke(self, latency:int, messages:list[str], guild:Guild, channel:GuildChannel, randomMention:bool, roles:list[Role], members:list[Member]):
         for message in messages:
             if message == "":
@@ -60,13 +61,13 @@ class RaidBot(Bot):
     async def Nuke(self, guildId:int, latency:int, messages:list[str], randomMention:bool, exclusionChannelIds:list[int], channelId:int | None=None, numberOfExecutions:int=50):
         guild = self.get_guild(guildId)
         if not guild:
-            self.logger.failed(f"Guild not joined ID:{self.user.id}")
+            self._logger.failed(f"Guild not joined ID:{self.user.id}")
             await self.close()
             return
         if channelId:
             channel = guild.get_channel(channelId)
             if not channel:
-                self.logger.failed(f"Channel not found ID:{self.user.id}")
+                self._logger.failed(f"Channel not found ID:{self.user.id}")
                 await self.close()
                 return
             self._channels = [channel]
@@ -90,14 +91,16 @@ class RaidBot(Bot):
                         continue
                     await self.oneNuke(latency, messages, guild, channel, randomMention, roles, members)
                     random.shuffle(self._channels)
-        self.logger.other("End")
+        self._logger.other("End")
+        await self.close()
     async def Typing(self, channelId:int):
         channel = self.get_channel(channelId)
-        self.logger.other(f"Start typing ID:{self.user.id}")
+        self._logger.other(f"Start typing ID:{self.user.id}")
         async with channel.typing():
             while not self._stop:
                 await asyncio.sleep(20)
-        self.logger.other("End")
+        self._logger.other("End")
+        await self.close()
     async def ChangeStatus(self, statusId:int):
         msg = str(self.user.id)
         status = Status.online
@@ -108,31 +111,37 @@ class RaidBot(Bot):
                 status = Status.idle
             case 3:
                 status = Status.dnd
-        self.logger.success(msg) if await self.changePresenceStatus(status) else self.logger.failed(msg)
+        self._logger.success(msg) if await self.changePresenceStatus(status) else self._logger.failed(msg)
+        await self.close()
     async def ChangeNickName(self, guildId:int, name:str):
         msg = str(self.user.id)
-        self.logger.success(msg) if await self.changeGuildNickName(guildId, name) else self.logger.failed(msg)
+        self._logger.success(msg) if await self.changeGuildNickName(guildId, name) else self._logger.failed(msg)
+        await self.close()
     async def JoinGuild(self, inviteId:str, goTime:int):
         joiner = Joiner(self._token, inviteId, goTime)
         r = joiner.join()
         match r:
             case 0:
-                self.logger.success(f"ID:{self.user.id}")
+                self._logger.success(f"ID:{self.user.id}")
             case 1:
-                self.logger.failed(f"Invite ID not found ID:{self.user.id}")
+                self._logger.failed(f"Invite ID not found ID:{self.user.id}")
             case 2:
-                self.logger.failed(f"ID:{self.user.id}")
+                self._logger.failed(f"ID:{self.user.id}")
             case 3:
-                self.logger.failed(f"Recaptcha ID:{self.user.id}")
+                self._logger.failed(f"Recaptcha ID:{self.user.id}")
+        await self.close()
     async def LeaveGuild(self, guildId:int):
         msg = str(self.user.id)
-        self.logger.success(msg) if await self.leaveGuild(guildId) else self.logger.failed(msg)
+        self._logger.success(msg) if await self.leaveGuild(guildId) else self._logger.failed(msg)
+        await self.close()
     async def Reaction(self, channelId:int, messageId:int, emoji:str, customEmoji:str):
         msg = str(self.user.id)
-        self.logger.success(msg) if await self.reaction(channelId, messageId, emoji, customEmoji) else self.logger.failed(msg)
+        self._logger.success(msg) if await self.reaction(channelId, messageId, emoji, customEmoji) else self._logger.failed(msg)
+        await self.close()
     async def PushButton(self, channelId:int, messageId:int):
         msg = str(self.user.id)
-        self.logger.success(msg) if await self.pushButton(channelId, messageId) else self.logger.failed(msg)
+        self._logger.success(msg) if await self.pushButton(channelId, messageId) else self._logger.failed(msg)
+        await self.close()
     async def on_ready(self):
-        self.logger.other(f"Ready ID:{self.user.id}, Name:{self.user.name}\n\n")
+        self._logger.other(f"Ready ID:{self.user.id}, Name:{self.user.name}")
         await self._readyFunc(*((self,)+self._readyFuncArgs))

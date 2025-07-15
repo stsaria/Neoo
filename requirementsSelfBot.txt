@@ -3,4 +3,5 @@ Flask
 selenium
 undetected-chromedriver
 setuptools
-plyvel
+plyvel; platform_system != 'Windows'
+plyvel-ci; platform_system == 'Windows'

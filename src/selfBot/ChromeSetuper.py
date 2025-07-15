@@ -8,6 +8,8 @@ import requests
 class ChromeSetuper:
     @staticmethod
     def setup() -> None:
+        if os.path.isdir(".chrome/"): return
+
         osArch = ""
 
         os.makedirs(".tmp/", exist_ok=True)
