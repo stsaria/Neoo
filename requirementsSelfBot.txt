@@ -1,0 +1,6 @@
+discord.py-self
+Flask
+selenium
+undetected-chromedriver
+setuptools
+plyvel
