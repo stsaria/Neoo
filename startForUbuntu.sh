@@ -18,5 +18,5 @@ makeVenv Bot
 selfBotPid=$!
 ./.BotVenv/bin/python3 -m src.bot.Main &
 botPid=$!
-./.SelfBotVenv/bin/python3 -m src.Main
+./.MainVenv/bin/python3 -m src.Main
 kill $selfBotPid $botPid

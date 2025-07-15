@@ -16,8 +16,6 @@ fi
 brew update
 brew install python leveldb
 
-xcode-select --install
-
 export CPATH="/opt/homebrew/include:$CPATH"
 export LIBRARY_PATH="/opt/homebrew/lib:$LIBRARY_PATH"
 
@@ -29,5 +27,5 @@ makeVenv Bot
 selfBotPid=$!
 ./.BotVenv/bin/python3 -m src.bot.Main &
 botPid=$!
-./.SelfBotVenv/bin/python3 -m src.Main
+./.MainVenv/bin/python3 -m src.Main
 kill $selfBotPid $botPid
