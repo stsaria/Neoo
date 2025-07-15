@@ -9,8 +9,12 @@ makeVenv(){
 }
 
 if ! command -v brew >/dev/<bos>; then
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install python3 python3-venv leveldb
+  echo "Homebrew is not found, please refer to https://brew.sh for installation."
+  exit 1
+fi
+
+brew update
+brew install python leveldb
 
 xcode-select --install
 
