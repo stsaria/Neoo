@@ -84,7 +84,6 @@ class Joiner:
         self._inputInput(self.SELECTORS["inviteIdInput"], self._inviteId)
         while not self._goTime <= int(time.time()):
             pass
-        print("aaa")
         self._driver.find_element(By.CSS_SELECTOR, self.SELECTORS["serverJoinSubmitButton"]).click()
         for i in range(100):
             if self._isJoined():
