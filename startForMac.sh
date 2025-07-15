@@ -8,7 +8,7 @@ makeVenv(){
   ./.$1Venv/bin/python3 -m pip install -r requirements$1.txt
 }
 
-if ! command -v brew >/dev/<bos>; then
+if ! command -v brew >/dev/null; then
   echo "Homebrew is not found, please refer to https://brew.sh for installation."
   exit 1
 fi
