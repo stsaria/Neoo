@@ -78,7 +78,7 @@ class Web:
 
             for token in tokens:
                 bot = RaidBot(logger, token, RaidBot.JoinGuild, (guildInviteCode, int(time.time())+goTime))
-                threading.Thread(target=bot.runBot, daemon=True).start()
+                threading.Thread(target=RaidBot.JoinGuild, args=(bot, guildInviteCode, int(time.time())+goTime), daemon=True).start()
                 bots.append(bot)
             return render_template("joinGuild.html")
         return render_template("joinGuild.html")
