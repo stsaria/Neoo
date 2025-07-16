@@ -34,7 +34,7 @@ class Joiner:
 
         options = self._geneOptions()
 
-        self._driver:uc.Chrome = uc.Chrome(options=options)
+        self._driver:uc.Chrome = uc.Chrome(options=options, driver_executable_path=self.DRIVER)
         self._driver.quit()
         time.sleep(0.5)
         self._writeTokenInfo()
