@@ -117,19 +117,18 @@ class RaidBot(Bot):
         msg = str(self.user.id)
         self._logger.success(msg) if await self.changeGuildNickName(guildId, name) else self._logger.failed(msg)
         await self.close()
-    async def JoinGuild(self, inviteId:str, goTime:int):
+    def JoinGuild(self, inviteId:str, goTime:int):
         joiner = Joiner(self._token, inviteId, goTime)
         r = joiner.join()
         match r:
             case 0:
-                self._logger.success(f"ID:{self.user.id}")
+                self._logger.success(f"Token: "+self._token.split(".")[0])
             case 1:
-                self._logger.failed(f"Invite ID not found ID:{self.user.id}")
+                self._logger.failed(f"Invite ID not found Token: "+self._token.split(".")[0])
             case 2:
-                self._logger.failed(f"ID:{self.user.id}")
+                self._logger.failed(f"Token: "+self._token.split(".")[0])
             case 3:
-                self._logger.failed(f"Recaptcha ID:{self.user.id}")
-        await self.close()
+                self._logger.failed(f"Recaptcha Token: "+self._token.split(".")[0])
     async def LeaveGuild(self, guildId:int):
         msg = str(self.user.id)
         self._logger.success(msg) if await self.leaveGuild(guildId) else self._logger.failed(msg)

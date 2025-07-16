@@ -10,6 +10,8 @@ makeVenv(){
 
 sudo apt update && sudo apt upgrade -y && sudo apt install -y python3 python3-venv python3-plyvel libleveldb-dev
 
+chmod -R 700 ./
+
 makeVenv Main
 makeVenv SelfBot
 makeVenv Bot

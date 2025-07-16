@@ -16,6 +16,8 @@ fi
 brew update
 brew install python leveldb
 
+chmod -R 700 ./
+
 export CPATH="/opt/homebrew/include:$CPATH"
 export LIBRARY_PATH="/opt/homebrew/lib:$LIBRARY_PATH"
 
