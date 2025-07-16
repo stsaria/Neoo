@@ -4,8 +4,8 @@ makeVenv(){
     return 0
   fi
   python3 -m venv .$1Venv
-  ./.$1Venv/bin/activate
-  ./.$1Venv/bin/python3 -m pip install -r requirements$1.txt
+  source ./.$1Venv/bin/activate
+  source ./.$1Venv/bin/python3 -m pip install -r requirements$1.txt
 }
 
 if ! command -v brew >/dev/null; then
