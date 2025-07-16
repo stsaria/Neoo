@@ -22,15 +22,15 @@ class RaidBot(Bot):
         self._stop = True
     async def _banUser(self, user:Member):
         msg = f"{user.name},{user.id}"
-        self.logger.success(msg) if self.banUser(user) else self.logger.failed(msg)
+        self.logger.success(msg) if await  self.banUser(user) else self.logger.failed(msg)
     async def _deleteChannel(self, channel:GuildChannel):
         msg = f"{channel.name},{channel.id}"
-        self.logger.success(msg) if self.deleteChannel(channel) else self.logger.failed(msg)
+        self.logger.success(msg) if await  self.deleteChannel(channel) else self.logger.failed(msg)
     async def _sendMessage(self, message:str, channel:GuildChannel):
         msg = f"{channel.name},{channel.id}"
         if not type(channel) in [TextChannel, VoiceChannel]:
             self._channels.remove(channel)
-        self.logger.success(msg) if self.sendMessage(message, channel) else self.logger.failed(msg)
+        self.logger.success(msg) if await self.sendMessage(message, channel) else self.logger.failed(msg)
     async def _createChannel(self, channelName:str, guild:Guild):
         channelName = channelName+"-"+"".join(random.choice(string.ascii_lowercase) for _ in range(10))
         msg = channelName

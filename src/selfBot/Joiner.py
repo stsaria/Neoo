@@ -1,6 +1,7 @@
 import os
 import platform
 import random
+import threading
 from urllib.parse import urlparse, parse_qs
 
 import plyvel
@@ -19,6 +20,8 @@ class Joiner:
         self.BROWSER_BIN_PATH = ".chrome/App/chrome" + (".exe" if platform.system() == "Windows" else "")
         self.BROWSER_PROFILE_PATH = os.path.abspath(f".chrome/Data/profile-{uuid4()}/")
         self.SELECTORS = {
+            "tutorialExclamationMarkButton": '[class="indicator_ffc7aa"]',
+            "tutorialPopupSkipButton": '[class="buttonSkipLeftAlign__79cbe button__201d5 lookBlank__201d5 colorWhite__201d5 sizeSmall__201d5 grow__201d5"]',
             "serverAddButton": '[data-list-item-id="guildsnav___create-join-button"]',
             "popupServerJoinButton": '[class="button__6af3a md__6af3a secondary__6af3a hasText__6af3a fullWidth__6af3a"]',
             "inviteIdInput": '[placeholder="https://discord.gg/hTKzmak"]',
@@ -40,7 +43,7 @@ class Joiner:
         self._writeTokenInfo()
         options = self._geneOptions()
         self._driver = uc.Chrome(options=options, driver_executable_path=self.DRIVER)
-        self._driver.set_window_size(500, 500)
+        self._driver.set_window_size(500, 800)
     def _geneOptions(self) -> uc.ChromeOptions:
         options = uc.ChromeOptions()
         options.binary_location = self.BROWSER_BIN_PATH
@@ -79,6 +82,8 @@ class Joiner:
             self._driver.quit()
             return 1
         self._driver.get(f"https://discord.com/app")
+        threading.Thread(target=self._clickButton, args=(self.SELECTORS["tutorialExclamationMarkButton"],), daemon=True).start()
+        threading.Thread(target=self._clickButton, args=(self.SELECTORS["tutorialPopupSkipButton"],), daemon=True).start()
         self._clickButton(self.SELECTORS["serverAddButton"])
         self._clickButton(self.SELECTORS["popupServerJoinButton"])
         self._inputInput(self.SELECTORS["inviteIdInput"], self._inviteId)

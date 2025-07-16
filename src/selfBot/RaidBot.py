@@ -1,6 +1,7 @@
 import asyncio
 import random
 import string
+import traceback
 import typing
 
 from discord import Member, TextChannel, VoiceChannel, Guild, Role, Status
@@ -26,7 +27,7 @@ class RaidBot(Bot):
         msg = f"{channel.name},{channel.id}"
         if not type(channel) in [TextChannel, VoiceChannel]:
             self._channels.remove(channel)
-        self._logger.success(msg) if self.sendMessage(message, channel) else self._logger.failed(msg)
+        self._logger.success(msg) if await self.sendMessage(message, channel) else self._logger.failed(msg)
     async def OneNuke(self, latency:int, messages:list[str], guild:Guild, channel:GuildChannel, randomMention:bool, roles:list[Role], members:list[Member]):
         for message in messages:
             if message == "":
@@ -77,19 +78,19 @@ class RaidBot(Bot):
         members = list(guild.members)
         roles.remove(guild.default_role)
         for _ in range(numberOfExecutions):
-            if self.stop:
+            if self._stop:
                 await self.close()
                 return
 
             if len(self._channels) == 1:
                 for i in range(10):
-                    await self.oneNuke(latency, messages, guild, self._channels[0], randomMention, roles, members)
+                    await self.OneNuke(latency, messages, guild, self._channels[0], randomMention, roles, members)
             else:
                 random.shuffle(self._channels)
                 for channel in self._channels:
                     if str(channel.id) in exclusionChannelIds:
                         continue
-                    await self.oneNuke(latency, messages, guild, channel, randomMention, roles, members)
+                    await self.OneNuke(latency, messages, guild, channel, randomMention, roles, members)
                     random.shuffle(self._channels)
         self._logger.other("End")
         await self.close()

@@ -185,7 +185,7 @@ RandomMention:{randomMention}""")
                 bot = RaidBot(logger, token, RaidBot.Nuke, (guildId, latency, [message]+subMessages, randomMention, [], channelId))
                 threading.Thread(target=bot.runBot, daemon=True).start()
                 bots.append(bot)
-            return render_template("channelNuke.html", logId=logId)
+            return render_template("channelNuke.html")
         return render_template("channelNuke.html")
     @staticmethod
     @_app.route("/nuke", methods=["GET", "POST"])
@@ -201,8 +201,11 @@ RandomMention:{randomMention}""")
             subMessages  = request.form["subMessages"].split("\r\n")
             exclusionChannelIdsTmp = request.form["exclusionChannelIds"].split(",")
             exclusionChannelIds = []
-            for sId in exclusionChannelIdsTmp:
-                exclusionChannelIds.append(int(sId))
+            try:
+                for sId in exclusionChannelIdsTmp:
+                    exclusionChannelIds.append(int(sId))
+            except:
+                pass
             randomMention = "randomMention" in request.form
 
             logger.other(
@@ -216,10 +219,10 @@ exclusionChannelIDs:{exclusionChannelIds}
 RandomMention:{randomMention}""")
 
             for token in tokens:
-                bot = RaidBot(logger, token, RaidBot.Nuke, (guildId, latency, [message]+subMessages, randomMention, exclusionChannelIds, randomMention))
+                bot = RaidBot(logger, token, RaidBot.Nuke, (guildId, latency, [message]+subMessages, randomMention, exclusionChannelIds))
                 threading.Thread(target=bot.runBot, daemon=True).start()
                 bots.append(bot)
-            return render_template("nuke.html", logId=logId)
+            return render_template("nuke.html")
         return render_template("nuke.html")
 
 if __name__ == "__main__":
