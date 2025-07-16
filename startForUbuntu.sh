@@ -8,7 +8,7 @@ makeVenv(){
   ./.$1Venv/bin/python3 -m pip install -r requirements$1.txt
 }
 
-sudo apt update && sudo apt upgrade && sudo apt install -y python3 python3-venv python3-plyvel libleveldb-dev
+sudo apt update && sudo apt upgrade -y && sudo apt install -y python3 python3-venv python3-plyvel libleveldb-dev
 
 makeVenv Main
 makeVenv SelfBot
